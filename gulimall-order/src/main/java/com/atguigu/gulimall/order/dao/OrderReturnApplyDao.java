@@ -1,0 +1,17 @@
+package com.atguigu.gulimall.order.dao;
+
+import com.atguigu.gulimall.order.entity.OrderReturnApplyEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * 订单退货申请
+ * 
+ * @author dcq
+ * @email 1193882675@qq.com
+ * @date 2026-01-13 19:49:38
+ */
+@Mapper
+public interface OrderReturnApplyDao extends BaseMapper<OrderReturnApplyEntity> {
+	
+}
