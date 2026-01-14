@@ -1,22 +1,37 @@
-spring:
-  datasource:
-    username: root
-    password: root
-    url: jdbc:mysql://192.168.1.11:3306/gulimall_oms
-    driver-class-name: com.mysql.cj.jdbc.Driver
+#spring:
+#  datasource:
+#    username: root
+#    password: root
+#    url: jdbc:mysql://192.168.1.11:3306/gulimall_oms
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#  application:
+#    name: gulimall-order
+#
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/**/*.xml
+#  global-config:
+#    db-config:
+#      id-type: auto
+#
+#server:
+#  port: 9000
 
+spring:
   cloud:
     nacos:
-      discovery:
+      config:
         server-addr: 127.0.0.1:8848
+        namespace: 96dc2f01-6f5b-45c6-ab81-b164ddbacaae
+  config:
+    import:
+      - nacos:datasource.yml?group=dev
+      - nacos:mybatis.yml?group=dev
+      - nacos:other.yml?group=dev
+
   application:
     name: gulimall-order
-
-mybatis-plus:
-  mapper-locations: classpath:/mapper/**/*.xml
-  global-config:
-    db-config:
-      id-type: auto
-
-server:
-  port: 9000
