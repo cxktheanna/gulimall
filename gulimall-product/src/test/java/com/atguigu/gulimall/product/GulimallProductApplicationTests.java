@@ -1,22 +1,27 @@
 package com.atguigu.gulimall.product;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyuncs.exceptions.ClientException;
 import com.atguigu.gulimall.product.entity.BrandEntity;
 import com.atguigu.gulimall.product.service.BrandService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
-//import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
-//@RunWith(SpringRunner.class)
 @SpringBootTest
 public class GulimallProductApplicationTests {
 
     @Autowired
     BrandService brandService;
+
 
     @Test
     public void contextLoads() {
@@ -29,7 +34,7 @@ public class GulimallProductApplicationTests {
 //        System.out.println("保存成功");
 //        brandService.updateById(brandEntity);
         List<BrandEntity> list = brandService.list(new QueryWrapper<BrandEntity>().eq("brand_id", 1L));
-        list.forEach((item)->{
+        list.forEach((item) -> {
             System.out.println(item);
         });
     }

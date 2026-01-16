@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.atguigu.gulimall</groupId>
-    <artifactId>gulimall-product</artifactId>
+    <artifactId>gulimall-third-party</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gulimall-product</name>
-    <description>gulimall-product</description>
+    <name>gulimall-third-party</name>
+    <description>gulimall-third-party</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,6 +15,17 @@
         <spring-cloud.version>2021.0.5</spring-cloud.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.atguigu.gulimall</groupId>
+            <artifactId>gulimall-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -29,19 +40,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
-            <groupId>com.atguigu.gulimall</groupId>
-            <artifactId>gulimall-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.17.4</version> <!-- 建议使用最新版 -->
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.aliyun.oss</groupId>-->
-<!--            <artifactId>aliyun-sdk-oss</artifactId>-->
-<!--            <version>3.18.4</version>-->
-<!--        </dependency>-->
-
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -56,6 +59,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>2021.0.5.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -79,7 +89,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.atguigu.gulimall.product.GulimallProductApplication</mainClass>
+                    <mainClass>com.atguigu.gulimall.thirdparty.GulimallThirdPartyApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>

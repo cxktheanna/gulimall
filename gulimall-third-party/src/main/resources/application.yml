@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 082607ef-1095-4500-91d3-c2a8326baa30
+  config:
+    import:
+      - nacos:oss.yml
+
+
