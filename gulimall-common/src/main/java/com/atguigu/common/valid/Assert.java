@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package com.atguigu.common.validator;
+package com.atguigu.common.valid;
 
 
 import com.atguigu.common.utils.RRException;

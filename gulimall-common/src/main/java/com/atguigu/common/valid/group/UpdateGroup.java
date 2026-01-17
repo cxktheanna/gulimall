@@ -6,12 +6,14 @@
  * 版权所有，侵权必究！
  */
 
-package com.atguigu.common.validator.group;
+package com.atguigu.common.valid.group;
 
 /**
- * 腾讯云
+ * 更新数据 Group
  *
  * @author Mark sunlightcs@gmail.com
  */
-public interface QcloudGroup {
+
+public interface UpdateGroup {
+
 }
