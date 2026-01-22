@@ -1,9 +1,11 @@
 package com.atguigu.gulimall.ware.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.atguigu.gulimall.ware.vo.MergeVo;
+import com.atguigu.gulimall.ware.vo.PurchaseDoneVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +31,20 @@ import com.atguigu.common.utils.R;
 public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
+
+    @RequestMapping("/done")
+    public R done(@RequestBody PurchaseDoneVo doneVo) {
+        purchaseService.done(doneVo);
+
+        return R.ok();
+    }
+
+    @RequestMapping("/received")
+    public R received(@RequestBody List<Long> ids) {
+        purchaseService.received(ids);
+
+        return R.ok();
+    }
 
     @RequestMapping("/merge")
     public R merge(@RequestBody MergeVo mergeVo) {
