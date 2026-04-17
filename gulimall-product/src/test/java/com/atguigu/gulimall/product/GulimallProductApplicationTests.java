@@ -1,19 +1,47 @@
 package com.atguigu.gulimall.product;
 
-import com.atguigu.gulimall.product.entity.BrandEntity;
+import com.atguigu.common.entity.product.*;
 import com.atguigu.gulimall.product.service.BrandService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 public class GulimallProductApplicationTests {
 
     @Autowired
     BrandService brandService;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    RedissonClient redissonClient;
+
+    @Test
+    public void redisson() {
+        System.out.println(redissonClient);
+    }
+
+
+    @Test
+    void testRedis() {
+        // 获取操作对象
+        ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
+
+        // 存储
+        ops.set("hello", "world" + UUID.randomUUID());
+
+        // 获取
+        System.out.println(ops.get("hello"));
+    }
 
 
     @Test

@@ -13,7 +13,7 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.product.dao.BrandDao;
-import com.atguigu.gulimall.product.entity.BrandEntity;
+import com.atguigu.common.entity.product.BrandEntity;
 import com.atguigu.gulimall.product.service.BrandService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;

@@ -1,8 +1,9 @@
 package com.atguigu.gulimall.product.service;
 
+import com.atguigu.common.vo.product.BaseAttrs;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
-import com.atguigu.gulimall.product.entity.ProductAttrValueEntity;
+import com.atguigu.common.entity.product.ProductAttrValueEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -23,5 +24,7 @@ public interface ProductAttrValueService extends IService<ProductAttrValueEntity
     List<ProductAttrValueEntity> baseAttrlistforspu(Long spuId);
 
     void updateSpuAttr(Long spuId, List<ProductAttrValueEntity> entities);
+
+    void saveProductAttrValue(Long spuId, List<BaseAttrs> baseAttrs);
 }
 

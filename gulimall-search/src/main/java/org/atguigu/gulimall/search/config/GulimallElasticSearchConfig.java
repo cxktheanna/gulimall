@@ -35,7 +35,7 @@ public class GulimallElasticSearchConfig {
     public RestHighLevelClient esRestClient() {
         RestHighLevelClient client = new RestHighLevelClient(
                 RestClient.builder(
-                        new HttpHost("10.234.163.238", 9200, "http")));// 如果此处是集群，传入多个主机就可以了
+                        new HttpHost("10.234.242.33", 9200, "http")));// 如果此处是集群，传入多个主机就可以了
         return client;
     }
 

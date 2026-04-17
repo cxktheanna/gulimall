@@ -2,7 +2,7 @@ package com.atguigu.gulimall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
-import com.atguigu.gulimall.product.entity.SpuImagesEntity;
+import com.atguigu.common.entity.product.SpuImagesEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -19,5 +19,7 @@ public interface SpuImagesService extends IService<SpuImagesEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     void saveImages(Long id, List<String> images);
+
+    void saveSpuImages(Long spuId, List<String> images);
 }
 

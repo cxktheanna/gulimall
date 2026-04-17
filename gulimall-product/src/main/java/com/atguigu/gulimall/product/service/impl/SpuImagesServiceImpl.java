@@ -13,8 +13,9 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.product.dao.SpuImagesDao;
-import com.atguigu.gulimall.product.entity.SpuImagesEntity;
+import com.atguigu.common.entity.product.SpuImagesEntity;
 import com.atguigu.gulimall.product.service.SpuImagesService;
+import org.springframework.util.CollectionUtils;
 
 
 @Service("spuImagesService")
@@ -40,6 +41,22 @@ public class SpuImagesServiceImpl extends ServiceImpl<SpuImagesDao, SpuImagesEnt
                 spuImagesEntity.setSpuId(id);
                 spuImagesEntity.setImgUrl(img);
                 return spuImagesEntity;
+            }).collect(Collectors.toList());
+            this.saveBatch(collect);
+        }
+    }
+
+    /**
+     * 新增商品图片
+     */
+    @Override
+    public void saveSpuImages(Long spuId, List<String> images) {
+        if (!CollectionUtils.isEmpty(images)) {
+            List<SpuImagesEntity> collect = images.stream().map(img -> {
+                SpuImagesEntity spuImages = new SpuImagesEntity();
+                spuImages.setSpuId(spuId);
+                spuImages.setImgUrl(img);
+                return spuImages;
             }).collect(Collectors.toList());
             this.saveBatch(collect);
         }

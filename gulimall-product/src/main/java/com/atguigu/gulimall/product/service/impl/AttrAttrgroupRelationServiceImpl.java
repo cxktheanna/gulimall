@@ -1,6 +1,6 @@
 package com.atguigu.gulimall.product.service.impl;
 
-import com.atguigu.gulimall.product.vo.AttrGroupRelationVo;
+import com.atguigu.common.vo.product.AttrGroupRelationVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.product.dao.AttrAttrgroupRelationDao;
-import com.atguigu.gulimall.product.entity.AttrAttrgroupRelationEntity;
+import com.atguigu.common.entity.product.AttrAttrgroupRelationEntity;
 import com.atguigu.gulimall.product.service.AttrAttrgroupRelationService;
 
 
@@ -33,7 +33,7 @@ public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupR
     }
 
     @Override
-    public void saveBatch(List<AttrGroupRelationVo> vos) {
+    public void saveBatch(List<AttrGroupRelationVO> vos) {
         List<AttrAttrgroupRelationEntity> relationEntities = vos.stream().map(item -> {
             AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
             BeanUtils.copyProperties(item, relationEntity);

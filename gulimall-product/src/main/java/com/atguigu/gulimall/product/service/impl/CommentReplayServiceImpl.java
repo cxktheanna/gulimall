@@ -9,7 +9,7 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.product.dao.CommentReplayDao;
-import com.atguigu.gulimall.product.entity.CommentReplayEntity;
+import com.atguigu.common.entity.product.CommentReplayEntity;
 import com.atguigu.gulimall.product.service.CommentReplayService;
 
 

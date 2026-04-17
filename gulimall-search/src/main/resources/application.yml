@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: d42dc53d-a1bc-437f-a9d1-671c68800792
+  config:
+    import:
+      - nacos:other.yml?group=dev
+#
+#  application:
+#    name: gulimall-search
+#
+#server:
+#  port: 12000

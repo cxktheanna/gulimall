@@ -9,7 +9,7 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.product.dao.SpuCommentDao;
-import com.atguigu.gulimall.product.entity.SpuCommentEntity;
+import com.atguigu.common.entity.product.SpuCommentEntity;
 import com.atguigu.gulimall.product.service.SpuCommentService;
 
 

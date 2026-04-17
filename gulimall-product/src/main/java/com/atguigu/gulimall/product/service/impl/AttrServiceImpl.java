@@ -1,19 +1,21 @@
 package com.atguigu.gulimall.product.service.impl;
 
 import com.atguigu.common.constant.product.AttrConstant;
+import com.atguigu.common.vo.product.Attr;
 import com.atguigu.gulimall.product.dao.AttrAttrgroupRelationDao;
 import com.atguigu.gulimall.product.dao.AttrGroupDao;
 import com.atguigu.gulimall.product.dao.CategoryDao;
-import com.atguigu.gulimall.product.entity.AttrAttrgroupRelationEntity;
-import com.atguigu.gulimall.product.entity.AttrGroupEntity;
-import com.atguigu.gulimall.product.entity.CategoryEntity;
+import com.atguigu.common.entity.product.AttrAttrgroupRelationEntity;
+import com.atguigu.common.entity.product.AttrGroupEntity;
+import com.atguigu.common.entity.product.CategoryEntity;
 import com.atguigu.gulimall.product.service.CategoryService;
-import com.atguigu.gulimall.product.vo.AttrGroupRelationVo;
-import com.atguigu.gulimall.product.vo.AttrRespVo;
-import com.atguigu.gulimall.product.vo.AttrVo;
+import com.atguigu.common.vo.product.AttrGroupRelationVO;
+import com.atguigu.common.vo.product.AttrRespVO;
+import com.atguigu.common.vo.product.AttrVO;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,7 +28,7 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.product.dao.AttrDao;
-import com.atguigu.gulimall.product.entity.AttrEntity;
+import com.atguigu.common.entity.product.AttrEntity;
 import com.atguigu.gulimall.product.service.AttrService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -60,7 +62,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
     @Transactional
     @Override
-    public void saveAttr(AttrVo attr) {
+    public void saveAttr(AttrVO attr) {
         AttrEntity attrEntity = new AttrEntity();
         BeanUtils.copyProperties(attr, attrEntity);
         // 保存基本数据
@@ -92,13 +94,13 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         // 分页查询
         IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), queryWrapper);
         // 封装vo冗余数据
-        List<AttrRespVo> attrRespVos = page.getRecords().stream().map(attr -> {
-            AttrRespVo attrRespVo = new AttrRespVo();
-            BeanUtils.copyProperties(attr, attrRespVo);
+        List<AttrRespVO> AttrRespVOs = page.getRecords().stream().map(attr -> {
+            AttrRespVO AttrRespVO = new AttrRespVO();
+            BeanUtils.copyProperties(attr, AttrRespVO);
 
             // 查询设置分类名
             CategoryEntity categoryEntity = categoryDao.selectById(attr.getCatelogId());
-            attrRespVo.setCatelogName(categoryEntity.getName());
+            AttrRespVO.setCatelogName(categoryEntity.getName());
 
             if (AttrConstant.AttrEnum.ATTR_TYPE_BASE.getCode() == attr.getAttrType()) {
                 // 基本规格，查询设置分组名
@@ -106,21 +108,22 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
                         new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attr.getAttrId()));
                 if (relationEntity != null && !StringUtils.isEmpty(relationEntity.getAttrGroupId())) {
                     AttrGroupEntity groupEntity = attrGroupDao.selectById(relationEntity.getAttrGroupId());
-                    attrRespVo.setGroupName(groupEntity.getAttrGroupName());
+                    AttrRespVO.setGroupName(groupEntity.getAttrGroupName());
                 }
             }
-            return attrRespVo;
+            return AttrRespVO;
         }).collect(Collectors.toList());
         // 封装回参
         PageUtils pageUtils = new PageUtils(page);
-        pageUtils.setList(attrRespVos);
+        pageUtils.setList(AttrRespVOs);
         return pageUtils;
     }
 
+    @Cacheable(value = "attr", key = "'attrinfo:'+#root.args[0]")
     @Override
-    public AttrRespVo getAttrInfo(Long attrId) {
+    public AttrRespVO getAttrInfo(Long attrId) {
         AttrEntity attrEntity = this.getById(attrId);
-        AttrRespVo respVo = new AttrRespVo();
+        AttrRespVO respVo = new AttrRespVO();
         BeanUtils.copyProperties(attrEntity, respVo);
 
         if (attrEntity.getAttrType().equals(AttrConstant.AttrEnum.ATTR_TYPE_BASE.getCode())) {
@@ -144,7 +147,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
     @Transactional
     @Override
-    public void updateAttr(AttrVo attr) {
+    public void updateAttr(AttrVO attr) {
         AttrEntity attrEntity = new AttrEntity();
         BeanUtils.copyProperties(attr, attrEntity);
         // 修改属性
@@ -165,6 +168,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         }
     }
 
+    /**
+     * 显示属性分组 关联的 所有属性
+     */
     @Override
     public List<AttrEntity> getRelationAttr(Long attrgroupId) {
         // 根据分组id查询所有关联关系
@@ -179,12 +185,12 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
             return new ArrayList<>();
         }
         // 非空查询返回
-        Collection<AttrEntity> attrEntities = this.listByIds(attrIds);
-        return (List<AttrEntity>) attrEntities;
+        List<AttrEntity> attrEntities = (List<AttrEntity>) this.listByIds(attrIds);
+        return attrEntities;
     }
 
     @Override
-    public void deleteRelation(AttrGroupRelationVo[] vos) {
+    public void deleteRelation(AttrGroupRelationVO[] vos) {
         List<AttrAttrgroupRelationEntity> entities = Arrays.stream(vos).map((item) -> {
             AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
             BeanUtils.copyProperties(item, relationEntity);
@@ -228,6 +234,19 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), queryWrapper);
         PageUtils pageUtils = new PageUtils(page);
         return pageUtils;
+    }
+
+    /**
+     * 查询允许被检索的属性ID集合
+     */
+    @Override
+    public List<Long> selectSearchAttrIds(List<Long> attrIds) {
+        return baseMapper.selectSearchAttrIds(attrIds);
+    }
+
+    @Override
+    public List<AttrEntity> getBatchIds(List<Long> attrIds) {
+        return this.baseMapper.selectBatchIds(attrIds);
     }
 
 }

@@ -1,8 +1,8 @@
 package com.atguigu.gulimall.product.service;
 
+import com.atguigu.common.entity.product.SpuInfoDescEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
-import com.atguigu.gulimall.product.entity.SpuInfoDescEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -19,5 +19,7 @@ public interface SpuInfoDescService extends IService<SpuInfoDescEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     void saveSpuInfoDesc(SpuInfoDescEntity descEntity);
+
+    void saveSpuInfoDesc(Long spuId, List<String> decript);
 }
 
