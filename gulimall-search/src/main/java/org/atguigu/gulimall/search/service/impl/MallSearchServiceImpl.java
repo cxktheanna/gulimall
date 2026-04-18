@@ -231,13 +231,13 @@ public class MallSearchServiceImpl implements MallSearchService {
         // ==========从聚合结果获取===========aggregations
         Aggregations aggregations = response.getAggregations();// 获取聚合结果
         // 3.当前所有商品涉及到的所有属性信息
-        ArrayList<SearchResult.AttrVO> attrs = new ArrayList<>();
+        ArrayList<SearchResult.AttrVo> attrs = new ArrayList<>();
         ParsedNested attrAgg = aggregations.get("attr_agg");
         ParsedLongTerms attrIdAgg = attrAgg.getAggregations().get("attr_id_agg");
         Map<Long, String> attrMap = new HashMap<>();// 面包屑map数据源【属性名】
         for (Terms.Bucket bucket : attrIdAgg.getBuckets()) {
             // 封装属性ID
-            SearchResult.AttrVO attr = new SearchResult.AttrVO();
+            SearchResult.AttrVo attr = new SearchResult.AttrVo();
             attr.setAttrId(bucket.getKeyAsNumber().longValue());
             // 封装属性名
             ParsedStringTerms attrNameAgg = bucket.getAggregations().get("attr_name_agg");
@@ -257,12 +257,12 @@ public class MallSearchServiceImpl implements MallSearchService {
         result.setAttrs(attrs);
 
         // 4.当前所有商品涉及到的所有品牌信息
-        List<SearchResult.BrandVO> brands = new ArrayList<>();
+        List<SearchResult.BrandVo> brands = new ArrayList<>();
         ParsedLongTerms brandAgg = aggregations.get("brand_agg");
         Map<Long, String> brandMap = new HashMap<>();// 面包屑map数据源【品牌】
         for (Terms.Bucket bucket : brandAgg.getBuckets()) {
             // 封装品牌ID
-            SearchResult.BrandVO brand = new SearchResult.BrandVO();
+            SearchResult.BrandVo brand = new SearchResult.BrandVo();
             brand.setBrandId(bucket.getKeyAsNumber().longValue());
             // 封装品牌名
             ParsedStringTerms brandNameAgg = bucket.getAggregations().get("brand_name_agg");

@@ -13,6 +13,15 @@
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
 
+    <!--只要有嵌套属性就要封装自定义结果集-->
+    <resultMap id="spuAttrGroup" type="com.atguigu.common.vo.product.SpuItemAttrGroupVO">
+        <result property="groupName" column="attr_group_name"/>
+        <collection property="attrs" ofType="com.atguigu.common.vo.product.Attr">
+            <result property="attrId" column="attr_id"></result>
+            <result property="attrName" column="attr_name"></result>
+            <result property="attrValue" column="attr_value"></result>
+        </collection>
+    </resultMap>
 
     <select id="getAttrGroupWithAttrsBySpuId" resultMap="spuAttrGroup">
         SELECT pav.spu_id,
