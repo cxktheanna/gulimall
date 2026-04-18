@@ -37,7 +37,7 @@ public class ItemController {
          * 5、spu规格与包装【参数信息】
          */
         SkuItemVO vos = skuInfoService.item(skuId);
-//        model.addAttribute("item",vos);
+        model.addAttribute("item",vos);
         return "item";
     }
 }

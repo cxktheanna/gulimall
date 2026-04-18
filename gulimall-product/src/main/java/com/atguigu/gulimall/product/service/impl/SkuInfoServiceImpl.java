@@ -46,8 +46,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     AttrGroupServiceImpl attrGroupService;
 //    @Autowired
 //    SeckillFeignService seckillFeignService;
-//    @Autowired
-//    ThreadPoolExecutor executor;
+    @Autowired
+    ThreadPoolExecutor executor;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -180,20 +180,20 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     @Override
     public SkuItemVO item(Long skuId) throws ExecutionException, InterruptedException {
         SkuItemVO result = new SkuItemVO();
-//
-//        CompletableFuture<SkuInfoEntity> skuInfoFuture = CompletableFuture.supplyAsync(() -> {
-//            // 1.获取sku基本信息（pms_sku_info）【默认图片、标题、副标题、价格】
-//            SkuInfoEntity skuInfo = getById(skuId);
-//            result.setInfo(skuInfo);
-//            return skuInfo;
-//        }, executor);
-//
-//        CompletableFuture<Void> imagesFuture = CompletableFuture.runAsync(() -> {
-//            // 2.获取sku图片信息（pms_sku_images）
-//            List<SkuImagesEntity> images = skuImagesService.getImagesBySkuId(skuId);
-//            result.setImages(images);
-//        }, executor);
-//
+
+        CompletableFuture<SkuInfoEntity> skuInfoFuture = CompletableFuture.supplyAsync(() -> {
+            // 1.获取sku基本信息（pms_sku_info）【默认图片、标题、副标题、价格】
+            SkuInfoEntity skuInfo = getById(skuId);
+            result.setInfo(skuInfo);
+            return skuInfo;
+        }, executor);
+
+        CompletableFuture<Void> imagesFuture = CompletableFuture.runAsync(() -> {
+            // 2.获取sku图片信息（pms_sku_images）
+            List<SkuImagesEntity> images = skuImagesService.getImagesBySkuId(skuId);
+            result.setImages(images);
+        }, executor);
+
 //        CompletableFuture<Void> seckillSkuFuture = CompletableFuture.runAsync(() -> {
 //            // 3.查询当前商品是否参与秒杀优惠
 ////            R r = seckillFeignService.getSkuSeckilInfo(skuId);
@@ -203,27 +203,29 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 ////                result.setSeckillSku(seckillSku);
 ////            }
 //        }, executor);
-//
-//        CompletableFuture<Void> saleAttrFuture = skuInfoFuture.thenAcceptAsync((skuInfo) -> {
-//            // 4.获取当前sku所属spu下的所有销售属性组合（pms_sku_info、pms_sku_sale_attr_value）
-//            List<SkuItemSaleAttrVO> saleAttr = skuSaleAttrValueService.getSaleAttrBySpuId(skuInfo.getSpuId());
-//            result.setSaleAttr(saleAttr);
-//        }, executor);
-//
-//        CompletableFuture<Void> descFuture = skuInfoFuture.thenAcceptAsync((skuInfo) -> {
-//            // 5.获取spu商品介绍（pms_spu_info_desc）【描述图片】
-//            SpuInfoDescEntity desc = spuInfoDescService.getById(skuInfo.getSpuId());
-//            result.setDesc(desc);
-//        }, executor);
-//
-//        CompletableFuture<Void> groupAttrsFuture = skuInfoFuture.thenAcceptAsync((skuInfo) -> {
-//            // 6.获取spu规格参数信息（pms_product_attr_value、pms_attr_attrgroup_relation、pms_attr_group）
-//            List<SpuItemAttrGroupVO> groupAttrs = attrGroupService.getAttrGroupWithAttrsBySpuId(skuInfo.getSpuId(), skuInfo.getCatalogId());
-//            result.setGroupAttrs(groupAttrs);
-//        }, executor);
-//
-//        // 等待所有任务都完成
+
+        CompletableFuture<Void> saleAttrFuture = skuInfoFuture.thenAcceptAsync((skuInfo) -> {
+            // 4.获取当前sku所属spu下的所有销售属性组合（pms_sku_info、pms_sku_sale_attr_value）
+            List<SkuItemSaleAttrVO> saleAttr = skuSaleAttrValueService.getSaleAttrBySpuId(skuInfo.getSpuId());
+            result.setSaleAttr(saleAttr);
+        }, executor);
+
+        CompletableFuture<Void> descFuture = skuInfoFuture.thenAcceptAsync((skuInfo) -> {
+            // 5.获取spu商品介绍（pms_spu_info_desc）【描述图片】
+            SpuInfoDescEntity desc = spuInfoDescService.getById(skuInfo.getSpuId());
+            result.setDesc(desc);
+        }, executor);
+
+        CompletableFuture<Void> groupAttrsFuture = skuInfoFuture.thenAcceptAsync((skuInfo) -> {
+            // 6.获取spu规格参数信息（pms_product_attr_value、pms_attr_attrgroup_relation、pms_attr_group）
+            List<SpuItemAttrGroupVO> groupAttrs = attrGroupService.getAttrGroupWithAttrsBySpuId(skuInfo.getSpuId(), skuInfo.getCatalogId());
+            result.setGroupAttrs(groupAttrs);
+        }, executor);
+
+        // 等待所有任务都完成
 //        CompletableFuture.allOf(imagesFuture, saleAttrFuture, descFuture, groupAttrsFuture, seckillSkuFuture).get();
+
+        CompletableFuture.allOf(imagesFuture, saleAttrFuture, descFuture, groupAttrsFuture).get();
 
         return result;
     }
