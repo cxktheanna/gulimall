@@ -9,6 +9,7 @@
 package com.atguigu.common.utils;
 
 import com.atguigu.common.constant.DateConstant;
+import com.atguigu.common.exception.BizCodeEnume;
 import com.atguigu.common.to.ware.SkuHasStockTO;
 import org.apache.http.HttpStatus;
 import com.alibaba.fastjson.JSONObject;
@@ -33,6 +34,10 @@ public class R extends HashMap<String, Object> {
 
     public static R error() {
         return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, "未知异常，请联系管理员");
+    }
+
+    public static R error(BizCodeEnume bizCode) {
+        return error(bizCode.getCode(), bizCode.getMsg());
     }
 
     public static R error(String msg) {
@@ -89,5 +94,14 @@ public class R extends HashMap<String, Object> {
      */
     public R setData(Object data) {
         return put("data", data);
+    }
+
+    /**
+     * 解析数据
+     */
+    public <T> T getData(String key, TypeReference<T> type) {
+        Object data = get(key);
+        String jsonString = JSONObject.toJSONStringWithDateFormat(data, DateConstant.DATE_FORMAT);
+        return JSONObject.parseObject(jsonString, type);
     }
 }

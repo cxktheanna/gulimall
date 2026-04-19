@@ -3,13 +3,15 @@ package com.atguigu.gulimall.member.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.atguigu.common.exception.BizCodeEnume;
+import com.atguigu.common.to.member.MemberUserLoginTO;
+import com.atguigu.common.to.member.MemberUserRegisterTO;
+import com.atguigu.common.to.member.WBSocialUserTO;
+import com.atguigu.gulimall.member.exception.PhoneException;
+import com.atguigu.gulimall.member.exception.UsernameException;
 import com.atguigu.gulimall.member.feign.CouponFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.atguigu.gulimall.member.entity.MemberEntity;
 import com.atguigu.gulimall.member.service.MemberService;
@@ -94,5 +96,54 @@ public class MemberController {
 
         return R.ok();
     }
+
+    /**
+     * 注册
+     */
+    @PostMapping("/regist")
+    public R regist(@RequestBody MemberUserRegisterTO user) {
+        try {
+            memberService.regist(user);
+            return R.ok();
+        } catch (PhoneException ex) {
+            return R.error(BizCodeEnume.PHONE_EXIST_EXCEPTION);
+        } catch (UsernameException ex) {
+            return R.error(BizCodeEnume.USER_EXIST_EXCEPTION);
+        } catch (Exception ex) {
+            return R.error(ex.getMessage());
+        }
+
+    }
+
+    /**
+     * 登录
+     */
+    @PostMapping("/login")
+    public R login(@RequestBody MemberUserLoginTO user) {
+        try {
+            MemberEntity entity = memberService.login(user);
+            if (entity == null) {
+                return R.error(BizCodeEnume.LOGINACCT_PASSWORD_EXCEPTION);
+            }
+            return R.ok().setData(entity);
+        } catch (Exception ex) {
+            return R.error(ex.getMessage());
+        }
+
+    }
+
+    /**
+     * 微博社交登录
+     */
+    @PostMapping("/gitee/oauth2/login")
+    public R oauthLogin(@RequestBody WBSocialUserTO user) {
+        try {
+            MemberEntity entity = memberService.login(user);
+            return R.ok().setData(entity);
+        } catch (Exception ex) {
+            return R.error(ex.getMessage());
+        }
+    }
+
 
 }

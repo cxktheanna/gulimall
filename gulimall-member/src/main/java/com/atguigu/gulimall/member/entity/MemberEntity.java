@@ -92,5 +92,17 @@ public class MemberEntity implements Serializable {
 	 * 注册时间
 	 */
 	private Date createTime;
+	/**
+	 * 微博社交账户uid（应该建立关联表）
+	 */
+	private String weiboUid;
+	/**
+	 * 访问令牌
+	 */
+	private String accessToken;
+	/**
+	 * 访问令牌的时间
+	 */
+	private Long expiresIn;
 
 }
