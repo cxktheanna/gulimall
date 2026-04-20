@@ -137,54 +137,59 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
      */
     @Override
     public MemberEntity login(WBSocialUserTO user) throws Exception {
-        String uid = user.getUid();
-        MemberEntity _entity = baseMapper.selectOne(new QueryWrapper<MemberEntity>().eq("weibo_uid", user.getUid()));
+        String giteeUserId = null;
+        String name = null;
+        String avatarUrl = null;
 
-        if (_entity != null) {
-            MemberEntity member = new MemberEntity();
-            member.setId(_entity.getId());
-            member.setAccessToken(user.getAccessToken());
-            member.setExpiresIn(user.getExpiresIn());
-            baseMapper.updateById(member);
-            _entity.setAccessToken(user.getAccessToken());
-            _entity.setExpiresIn(user.getExpiresIn());
-            return _entity;
-        } else {
-            MemberEntity member = new MemberEntity();
-            try {
-                // ===================== Gitee 获取用户信息（正确4参数） =====================
-                Map<String, String> queryMap = new HashMap<>();
-                queryMap.put("access_token", user.getAccessToken());
+        try {
+            // 获取 Gitee 用户信息（唯一能拿到 id 的地方）
+            Map<String, String> queryMap = new HashMap<>();
+            queryMap.put("access_token", user.getAccessToken());
 
-                HttpResponse response = HttpUtils.doGet(
-                        "https://gitee.com",
-                        "/api/v5/user",
-                        new HashMap<>(),
-                        queryMap
-                );
-                // ======================================================================
+            HttpResponse response = HttpUtils.doGet(
+                    "https://gitee.com",
+                    "/api/v5/user",
+                    new HashMap<>(),
+                    queryMap
+            );
 
-                if (response.getStatusLine().getStatusCode() == 200) {
-                    String json = EntityUtils.toString(response.getEntity());
-                    JSONObject jsonObject = JSON.parseObject(json);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                String json = EntityUtils.toString(response.getEntity());
+                JSONObject jsonObject = JSON.parseObject(json);
 
-                    // Gitee 字段
-                    String name = jsonObject.getString("name");
-                    String avatarUrl = jsonObject.getString("avatar_url");
-
-                    member.setNickname(name);
-                    member.setGender(0); // Gitee 没有性别，给默认值
-                    member.setHeader(avatarUrl);
-                    member.setCreateTime(new Date());
-                }
-            } catch (Exception e) { }
-
-            member.setWeiboUid(user.getUid());
-            member.setAccessToken(user.getAccessToken());
-            member.setExpiresIn(user.getExpiresIn());
-            baseMapper.insert(member);
-            return member;
+                // 核心字段
+                giteeUserId = jsonObject.getString("id");
+                name = jsonObject.getString("name");
+                avatarUrl = jsonObject.getString("avatar_url");
+            }
+        } catch (Exception e) {
+            throw new Exception("获取Gitee用户信息失败", e);
         }
+
+        // 查询是否已注册
+        MemberEntity dbMember = baseMapper.selectOne(
+                new QueryWrapper<MemberEntity>().eq("weibo_uid", giteeUserId)
+        );
+
+        if (dbMember != null) {
+            dbMember.setAccessToken(user.getAccessToken());
+            dbMember.setExpiresIn(user.getExpiresIn());
+            baseMapper.updateById(dbMember);
+            return dbMember;
+        }
+
+        // 新用户注册
+        MemberEntity newMember = new MemberEntity();
+        newMember.setNickname(name);
+        newMember.setHeader(avatarUrl);
+        newMember.setGender(0);
+        newMember.setCreateTime(new Date());
+        newMember.setWeiboUid(giteeUserId);
+        newMember.setAccessToken(user.getAccessToken());
+        newMember.setExpiresIn(user.getExpiresIn());
+
+        baseMapper.insert(newMember);
+        return newMember;
     }
 
 }

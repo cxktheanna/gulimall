@@ -44,6 +44,8 @@ public class OAuth2Controller {
     public String gitee(@RequestParam("code") String code, HttpSession session, HttpServletResponse servletResponse) throws Exception {
         // 1. 根据code换取Gitee Access Token
         Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/x-www-form-urlencoded");
+
         Map<String, String> querys = new HashMap<>();
         Map<String, String> map = new HashMap<>();
 
@@ -53,41 +55,32 @@ public class OAuth2Controller {
         map.put("redirect_uri", "http://auth.gulimall.com/oauth2.0/gitee/success");
         map.put("code", code);
 
-        // ======================= 只改了这里 =======================
         HttpResponse response = HttpUtils.doPost(
-                "https://gitee.com",   // 换成gitee
-                "/oauth/token",       // 换成gitee
+                "https://gitee.com",
+                "/oauth/token",
                 headers,
                 querys,
                 map
         );
-        // ==========================================================
 
-        // 2.处理请求返回 —— 完全和你原来微博代码一样！
         if (response.getStatusLine().getStatusCode() == 200) {
             String jsonString = EntityUtils.toString(response.getEntity());
+            JSONObject giteeJson = JSON.parseObject(jsonString);
 
-            // ======================= 关键修复 =======================
-            // 先用Map接收Gitee返回，再手动设置给你的VO
-            Map<String, Object> giteeMap = JSON.parseObject(jsonString, Map.class);
             WBSocialUserVO user = new WBSocialUserVO();
-            user.setAccess_token((String) giteeMap.get("access_token"));
-            user.setExpires_in((Long) giteeMap.get("expires_in"));
-            user.setUid(giteeMap.get("id").toString()); // gitee的用户id叫id，赋值给uid
-            // ==========================================================
+            user.setAccess_token(giteeJson.getString("access_token"));
+            user.setExpires_in(giteeJson.getLongValue("expires_in"));
+            user.setUid(null); // 这里不传，去 member 服务拿真正的 id
 
-            // ======================= 以下完全不动，原样保留 =======================
             R r = memberAgentService.oauthLogin(user);
             if (r.getCode() == 0) {
                 MemberResponseVO loginUser = r.getData(new TypeReference<MemberResponseVO>() {});
                 session.setAttribute(AuthConstant.LOGIN_USER, loginUser);
                 return "redirect:http://gulimall.com";
-            } else {
-                return "redirect:http://auth.gulimall.com/login.html";
             }
-        } else {
-            return "redirect:http://auth.gulimall.com/login.html";
         }
+        return "redirect:http://auth.gulimall.com/login.html";
+
     }
 
 }
