@@ -1,6 +1,7 @@
 package com.atguigu.common.to.order;
 
 //import com.atguigu.common.vo.order.OrderItemVO;
+import com.atguigu.common.vo.order.OrderItemVO;
 import lombok.Data;
 
 import java.util.List;
@@ -14,5 +15,5 @@ import java.util.List;
 public class WareSkuLockTO {
     private String orderSn;
     /** 需要锁住的所有库存信息 **/
-//    private List<OrderItemVO> locks;
+    private List<OrderItemVO> locks;
 }
