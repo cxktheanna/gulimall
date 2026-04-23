@@ -1,17 +1,25 @@
 package com.atguigu.gulimall.order.dao;
 
-import com.atguigu.gulimall.order.entity.OrderEntity;
+import com.atguigu.common.entity.order.OrderEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 订单
  * 
- * @author dcq
- * @email 1193882675@qq.com
- * @date 2026-01-13 19:49:38
+ * @author wanzenghui
+ * @email lemon_wan@aliyun.com
+ * @date 2021-09-02 22:57:46
  */
 @Mapper
 public interface OrderDao extends BaseMapper<OrderEntity> {
-	
+
+    /**
+     * 修改订单状态
+     * @param orderSn   订单号
+     * @param code      订单状态
+     * @param payType   支付类型
+     */
+    void updateOrderStatus(@Param("orderSn") String orderSn, @Param("code") Integer code, @Param("payType") Integer payType);
 }

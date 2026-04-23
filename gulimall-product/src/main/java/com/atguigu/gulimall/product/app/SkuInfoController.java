@@ -1,14 +1,13 @@
 package com.atguigu.gulimall.product.app;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.atguigu.common.entity.product.SkuInfoEntity;
 import com.atguigu.gulimall.product.service.SkuInfoService;
@@ -79,6 +78,15 @@ public class SkuInfoController {
 		skuInfoService.removeByIds(Arrays.asList(skuIds));
 
         return R.ok();
+    }
+
+    /**
+     * 获取商品价格信息
+     */
+    @PostMapping("/info/sku/price")
+    public Map<Long, BigDecimal> getPrice(@RequestBody Collection<Long> skuIds) {
+        return skuInfoService.getByIds(skuIds).stream()
+                .collect(Collectors.toMap(SkuInfoEntity::getSkuId, SkuInfoEntity::getPrice));
     }
 
 }

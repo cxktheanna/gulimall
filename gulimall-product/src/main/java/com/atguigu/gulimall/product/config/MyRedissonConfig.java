@@ -15,7 +15,7 @@ public class MyRedissonConfig {
 
     @Bean(destroyMethod = "shutdown")
     public RedissonClient redisson() throws IOException {
-        String host = "10.234.242.33";
+        String host = "10.234.115.63";
         String port = "6379";
         // 1.创建配置
         Config config = new Config();

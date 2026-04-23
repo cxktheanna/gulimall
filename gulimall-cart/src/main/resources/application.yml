@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: d12a08e4-3bc2-4609-bc57-a8d273aa498b
+  config:
+    import:
+      - nacos:other.yml?group=dev

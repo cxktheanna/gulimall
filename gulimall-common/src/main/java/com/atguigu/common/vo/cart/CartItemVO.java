@@ -1,11 +1,14 @@
 package com.atguigu.common.vo.cart;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * 购物项VO（购物车内每一项商品内容）
  */
+@Data
 public class CartItemVO {
     private Long skuId;                     // skuId
     private Boolean check = true;           // 是否选中

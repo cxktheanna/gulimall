@@ -1,6 +1,7 @@
 package com.atguigu.gulimall.order.dao;
 
-import com.atguigu.gulimall.order.entity.OrderItemEntity;
+
+import com.atguigu.common.entity.order.OrderItemEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
