@@ -21,7 +21,7 @@ public interface WmsFeignService {
      * 批量查询sku是否有库存
      */
     @PostMapping(value = "/ware/waresku/hasstock")
-    R getSkuHasStock(@RequestBody List<Long> skuIds);
+    R getSkusHasStock(@RequestBody List<Long> skuIds);
 
     /**
      * 查询运费和收货地址信息

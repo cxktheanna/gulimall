@@ -148,7 +148,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }, executor).thenRunAsync(() -> {
             // 3.批量查询库存（有货/无货）
             List<Long> skuIds = result.getItems().stream().map(item -> item.getSkuId()).collect(Collectors.toList());
-            R skuHasStock = wmsFeignService.getSkuHasStock(skuIds);
+            R skuHasStock = wmsFeignService.getSkusHasStock(skuIds);
             List<SkuHasStockTO> skuHasStocks = skuHasStock.getData(new TypeReference<List<SkuHasStockTO>>() {
             });
             Map<Long, Boolean> stocks = skuHasStocks.stream().collect(Collectors.toMap(key -> key.getSkuId(), val -> val.getHasStock()));

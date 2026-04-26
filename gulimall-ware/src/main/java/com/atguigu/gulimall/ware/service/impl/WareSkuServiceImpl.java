@@ -1,14 +1,21 @@
 package com.atguigu.gulimall.ware.service.impl;
 
+import com.atguigu.common.constant.ware.WareOrderTaskConstant;
+import com.atguigu.common.exception.NoStockException;
+import com.atguigu.common.to.mq.StockDetailTO;
+import com.atguigu.common.to.mq.StockLockedTO;
 import com.atguigu.common.to.ware.SkuHasStockTO;
+import com.atguigu.common.to.ware.WareSkuLockTO;
 import com.atguigu.common.utils.R;
+import com.atguigu.common.vo.ware.OrderItemVO;
+import com.atguigu.gulimall.ware.entity.WareOrderTaskDetailEntity;
+import com.atguigu.gulimall.ware.entity.WareOrderTaskEntity;
 import com.atguigu.gulimall.ware.feign.ProductFeignService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -20,6 +27,8 @@ import com.atguigu.common.utils.Query;
 import com.atguigu.gulimall.ware.dao.WareSkuDao;
 import com.atguigu.gulimall.ware.entity.WareSkuEntity;
 import com.atguigu.gulimall.ware.service.WareSkuService;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 
@@ -99,4 +108,80 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         }).collect(Collectors.toList());
     }
 
+    @Transactional
+    @Override
+    public Boolean orderLockStock(WareSkuLockTO lockTO) {
+//        // 按照收货地址找到就近仓库，锁定库存（暂未实现）
+//        // 采用方案：获取每项商品在哪些仓库有库存，轮询尝试锁定，任一商品锁定失败回滚
+//
+//        // 1.往库存工作单存储当前锁定（本地事务表）
+//        WareOrderTaskEntity taskEntity = new WareOrderTaskEntity();
+//        taskEntity.setOrderSn(lockTO.getOrderSn());
+//        orderTaskService.save(taskEntity);
+//
+//        // 2.封装待锁定库存项Map
+//        Map<Long, OrderItemVO> lockItemMap = lockTO.getLocks().stream().collect(Collectors.toMap(key -> key.getSkuId(), val -> val));
+//        // 3.查询（库存 - 库存锁定 >= 待锁定库存数）的仓库
+//        List<WareSkuEntity> wareEntities = baseMapper.selectListHasSkuStock(lockItemMap.keySet()).stream().filter(entity -> entity.getStock() - entity.getStockLocked() >= lockItemMap.get(entity.getSkuId()).getCount()).collect(Collectors.toList());
+//        // 判断是否查询到仓库
+//        if (CollectionUtils.isEmpty(wareEntities)) {
+//            // 匹配失败，所有商品项没有库存
+//            Set<Long> skuIds = lockItemMap.keySet();
+//            throw new NoStockException(skuIds);
+//        }
+//        // 将查询出的仓库数据封装成Map，key:skuId  val:wareId
+//        Map<Long, List<WareSkuEntity>> wareMap = wareEntities.stream().collect(Collectors.groupingBy(key -> key.getSkuId()));
+//        // 4.判断是否为每一个商品项至少匹配了一个仓库
+//        List<WareOrderTaskDetailEntity> taskDetails = new ArrayList<>();// 库存锁定工作单详情
+//        Map<Long, StockLockedTO> lockedMessageMap = new HashMap<>();// 库存锁定工作单消息
+//        if (wareMap.size() < lockTO.getLocks().size()) {
+//            // 匹配失败，部分商品没有库存
+//            Set<Long> skuIds = lockItemMap.keySet();
+//            skuIds.removeAll(wareMap.keySet());// 求商品项差集
+//            throw new NoStockException(skuIds);
+//        } else {
+//            // 所有商品都存在有库存的仓库
+//            // 5.锁定库存
+//            for (Map.Entry<Long, List<WareSkuEntity>> entry : wareMap.entrySet()) {
+//                Boolean skuStocked = false;
+//                Long skuId = entry.getKey();// 商品
+//                OrderItemVO item = lockItemMap.get(skuId);
+//                Integer count = item.getCount();// 待锁定个数
+//                List<WareSkuEntity> hasStockWares = entry.getValue();// 有足够库存的仓库
+//                for (WareSkuEntity ware : hasStockWares) {
+//                    Long num = baseMapper.lockSkuStock(skuId, ware.getWareId(), count);
+//                    if (num == 1) {
+//                        // 锁定成功，跳出循环
+//                        skuStocked = true;
+//                        // 创建库存锁定工作单详情（每一件商品锁定详情）
+//                        WareOrderTaskDetailEntity taskDetail = new WareOrderTaskDetailEntity(null, skuId,
+//                                item.getTitle(), count, taskEntity.getId(), ware.getWareId(),
+//                                WareOrderTaskConstant.LockStatusEnum.LOCKED.getCode());
+//                        taskDetails.add(taskDetail);
+//                        // 创建库存锁定工作单消息（每一件商品一条消息）
+//                        StockDetailTO detailMessage = new StockDetailTO();
+//                        BeanUtils.copyProperties(taskDetail, detailMessage);
+//                        StockLockedTO lockedMessage = new StockLockedTO(taskEntity.getId(), detailMessage);
+//                        lockedMessageMap.put(skuId, lockedMessage);
+//                        break;
+//                    }
+//                }
+//                if (!skuStocked) {
+//                    // 匹配失败，当前商品所有仓库都未锁定成功
+//                    throw new NoStockException(skuId);
+//                }
+//            }
+//        }
+//
+//        // 6.往库存工作单详情存储当前锁定（本地事务表）
+//        orderTaskDetailService.saveBatch(taskDetails);
+//
+//        // 7.发送消息
+//        for (WareOrderTaskDetailEntity taskDetail : taskDetails) {
+//            StockLockedTO message = lockedMessageMap.get(taskDetail.getSkuId());
+//            message.getDetail().setId(taskDetail.getId());// 存储库存详情ID
+//            rabbitTemplate.convertAndSend("stock-event-exchange", "stock.locked", message);
+//        }
+        return true;
+    }
 }
