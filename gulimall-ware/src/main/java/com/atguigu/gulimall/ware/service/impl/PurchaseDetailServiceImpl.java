@@ -12,7 +12,7 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.ware.dao.PurchaseDetailDao;
-import com.atguigu.gulimall.ware.entity.PurchaseDetailEntity;
+import com.atguigu.common.entity.ware.PurchaseDetailEntity;
 import com.atguigu.gulimall.ware.service.PurchaseDetailService;
 import org.springframework.util.StringUtils;
 

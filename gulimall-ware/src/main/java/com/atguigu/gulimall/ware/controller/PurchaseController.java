@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.atguigu.gulimall.ware.entity.PurchaseEntity;
+import com.atguigu.common.entity.ware.PurchaseEntity;
 import com.atguigu.gulimall.ware.service.PurchaseService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;

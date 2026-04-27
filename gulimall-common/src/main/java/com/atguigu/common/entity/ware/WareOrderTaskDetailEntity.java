@@ -1,19 +1,22 @@
-package com.atguigu.gulimall.ware.entity;
+package com.atguigu.common.entity.ware;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
-import lombok.Data;
 
 /**
  * 库存工作单
  * 
- * @author dcq
- * @email 1193882675@qq.com
- * @date 2026-01-13 19:52:12
+ * @author wanzenghui
+ * @email lemon_wan@aliyun.com
+ * @date 2021-09-02 22:59:35
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @TableName("wms_ware_order_task_detail")
 public class WareOrderTaskDetailEntity implements Serializable {
@@ -40,5 +43,13 @@ public class WareOrderTaskDetailEntity implements Serializable {
 	 * 工作单id
 	 */
 	private Long taskId;
+	/**
+	 * 仓库id
+	 */
+	private Long wareId;
+	/**
+	 * 1-已锁定  2-已解锁  3-扣减
+	 */
+	private Integer lockStatus;
 
 }

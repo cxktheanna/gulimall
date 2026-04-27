@@ -10,7 +10,7 @@ import com.atguigu.common.to.ware.WareSkuLockTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.atguigu.gulimall.ware.entity.WareSkuEntity;
+import com.atguigu.common.entity.ware.WareSkuEntity;
 import com.atguigu.gulimall.ware.service.WareSkuService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;

@@ -1,18 +1,17 @@
-package com.atguigu.gulimall.ware.entity;
+package com.atguigu.common.entity.ware;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
-import lombok.Data;
 
 /**
  * 商品库存
  * 
- * @author dcq
- * @email 1193882675@qq.com
- * @date 2026-01-13 19:52:12
+ * @author wanzenghui
+ * @email lemon_wan@aliyun.com
+ * @date 2021-09-02 22:59:35
  */
 @Data
 @TableName("wms_ware_sku")

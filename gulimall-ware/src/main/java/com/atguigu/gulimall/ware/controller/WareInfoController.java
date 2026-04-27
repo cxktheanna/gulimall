@@ -7,7 +7,7 @@ import com.atguigu.common.vo.ware.FareVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.atguigu.gulimall.ware.entity.WareInfoEntity;
+import com.atguigu.common.entity.ware.WareInfoEntity;
 import com.atguigu.gulimall.ware.service.WareInfoService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;

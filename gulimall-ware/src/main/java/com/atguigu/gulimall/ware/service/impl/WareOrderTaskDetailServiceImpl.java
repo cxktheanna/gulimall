@@ -9,7 +9,7 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.ware.dao.WareOrderTaskDetailDao;
-import com.atguigu.gulimall.ware.entity.WareOrderTaskDetailEntity;
+import com.atguigu.common.entity.ware.WareOrderTaskDetailEntity;
 import com.atguigu.gulimall.ware.service.WareOrderTaskDetailService;
 
 

@@ -18,7 +18,7 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.ware.dao.WareInfoDao;
-import com.atguigu.gulimall.ware.entity.WareInfoEntity;
+import com.atguigu.common.entity.ware.WareInfoEntity;
 import com.atguigu.gulimall.ware.service.WareInfoService;
 import org.springframework.util.StringUtils;
 

@@ -1,7 +1,7 @@
 package com.atguigu.gulimall.ware.service.impl;
 
 import com.atguigu.common.constant.ware.PurchaseConstant;
-import com.atguigu.gulimall.ware.entity.PurchaseDetailEntity;
+import com.atguigu.common.entity.ware.PurchaseDetailEntity;
 import com.atguigu.gulimall.ware.service.PurchaseDetailService;
 import com.atguigu.gulimall.ware.service.WareSkuService;
 import com.atguigu.gulimall.ware.vo.MergeVo;
@@ -23,7 +23,7 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.ware.dao.PurchaseDao;
-import com.atguigu.gulimall.ware.entity.PurchaseEntity;
+import com.atguigu.common.entity.ware.PurchaseEntity;
 import com.atguigu.gulimall.ware.service.PurchaseService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;

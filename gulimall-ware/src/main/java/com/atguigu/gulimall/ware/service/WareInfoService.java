@@ -3,7 +3,7 @@ package com.atguigu.gulimall.ware.service;
 import com.atguigu.common.vo.ware.FareVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
-import com.atguigu.gulimall.ware.entity.WareInfoEntity;
+import com.atguigu.common.entity.ware.WareInfoEntity;
 
 import java.util.Map;
 

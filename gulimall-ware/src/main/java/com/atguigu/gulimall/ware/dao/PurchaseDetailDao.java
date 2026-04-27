@@ -1,6 +1,6 @@
 package com.atguigu.gulimall.ware.dao;
 
-import com.atguigu.gulimall.ware.entity.PurchaseDetailEntity;
+import com.atguigu.common.entity.ware.PurchaseDetailEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
