@@ -8,7 +8,7 @@ package com.atguigu.common.constant.order;
 public class PaymentConstant {
 
     // 支付成功异步跳转的地址（内网穿透）
-    public static final String SYSTEM_URL = "http://124.223.7.41:8888";
+    public static final String SYSTEM_URL = "http://dcq.natapp1.cc";
 
     /**
      * 支付类型
@@ -95,6 +95,9 @@ public class PaymentConstant {
      * 业务详情
      */
     public enum PayBusinessDetailType {
+//        ALI_ORDER(201, 201001, "订单支付", "/payed/ali/notify", "http://www.baidu.com"),
+//        ALI_ORDER_HK(202, 201001, "订单支付", "/payed/ali/hk/notify", "http://www.baidu.com"),
+//        ;
         ALI_ORDER(201, 201001, "订单支付", "/payed/ali/notify", "http://member.gulimall.com/memberOrder.html"),
         ALI_ORDER_HK(202, 201001, "订单支付", "/payed/ali/hk/notify", "http://member.gulimall.com/memberOrder.html"),
         ;

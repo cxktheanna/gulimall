@@ -9,6 +9,7 @@ spring:
       - nacos:datasource.yml?group=dev
       - nacos:mybatis.yml?group=dev
       - nacos:other.yml?group=dev
+      - nacos:alipay.yml?group=dev
 
   application:
     name: gulimall-order
