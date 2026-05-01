@@ -1,4 +1,4 @@
-package org.atguigu.gulimall.seckill.config;
+package com.atguigu.gulimall.seckill.config;
 
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;

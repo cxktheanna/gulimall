@@ -1,7 +1,8 @@
-package org.atguigu.gulimall.seckill.config;
+package com.atguigu.gulimall.seckill.config;
 
 
-import org.atguigu.gulimall.seckill.interceptor.LoginUserInterceptor;
+
+import com.atguigu.gulimall.seckill.interceptor.LoginUserInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

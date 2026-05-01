@@ -1,4 +1,4 @@
-package org.atguigu.gulimall.seckill.interceptor;
+package com.atguigu.gulimall.seckill.interceptor;
 
 import com.atguigu.common.constant.auth.AuthConstant;
 import com.atguigu.common.vo.auth.MemberResponseVO;

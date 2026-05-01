@@ -1,8 +1,9 @@
-package org.atguigu.gulimall.seckill.scheduled;
+package com.atguigu.gulimall.seckill.scheduled;
 
 import com.atguigu.common.constant.seckill.SeckillConstant;
+import com.atguigu.gulimall.seckill.service.SeckillService;
 import lombok.extern.slf4j.Slf4j;
-import org.atguigu.gulimall.seckill.service.SeckillService;
+
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package org.atguigu.gulimall.seckill.service.impl;
+package com.atguigu.gulimall.seckill.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -11,12 +11,13 @@ import com.atguigu.common.to.seckill.SkuInfoTO;
 import com.atguigu.common.utils.R;
 import com.atguigu.common.vo.auth.MemberResponseVO;
 import com.atguigu.common.vo.product.SeckillSkuVO;
+import com.atguigu.gulimall.seckill.feign.CouponFeignService;
+import com.atguigu.gulimall.seckill.feign.ProductFeignService;
+import com.atguigu.gulimall.seckill.interceptor.LoginUserInterceptor;
+import com.atguigu.gulimall.seckill.service.SeckillService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.extern.slf4j.Slf4j;
-import org.atguigu.gulimall.seckill.feign.CouponFeignService;
-import org.atguigu.gulimall.seckill.feign.ProductFeignService;
-import org.atguigu.gulimall.seckill.interceptor.LoginUserInterceptor;
-import org.atguigu.gulimall.seckill.service.SeckillService;
+
 import org.redisson.api.RSemaphore;
 import org.redisson.api.RedissonClient;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

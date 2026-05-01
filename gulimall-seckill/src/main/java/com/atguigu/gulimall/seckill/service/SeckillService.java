@@ -1,4 +1,4 @@
-package org.atguigu.gulimall.seckill.service;
+package com.atguigu.gulimall.seckill.service;
 
 
 import com.atguigu.common.to.seckill.SeckillSkuRedisTO;

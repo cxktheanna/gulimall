@@ -1,9 +1,10 @@
-package org.atguigu.gulimall.seckill.controller;
+package com.atguigu.gulimall.seckill.controller;
 
 import com.atguigu.common.to.seckill.SeckillSkuRedisTO;
 import com.atguigu.common.utils.R;
 
-import org.atguigu.gulimall.seckill.service.SeckillService;
+
+import com.atguigu.gulimall.seckill.service.SeckillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

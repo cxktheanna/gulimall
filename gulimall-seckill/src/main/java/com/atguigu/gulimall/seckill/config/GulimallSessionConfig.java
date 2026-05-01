@@ -1,4 +1,4 @@
-package org.atguigu.gulimall.seckill.config;
+package com.atguigu.gulimall.seckill.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

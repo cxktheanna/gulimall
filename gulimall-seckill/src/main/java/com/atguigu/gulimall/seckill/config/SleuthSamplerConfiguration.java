@@ -1,4 +1,4 @@
-package org.atguigu.gulimall.seckill.config;
+package com.atguigu.gulimall.seckill.config;
 
 //import brave.sampler.Sampler;
 //import org.springframework.beans.factory.annotation.Value;
