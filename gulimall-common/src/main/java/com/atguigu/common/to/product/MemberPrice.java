@@ -1,7 +1,7 @@
 /**
   * Copyright 2020 bejson.com 
   */
-package com.atguigu.common.to;
+package com.atguigu.common.to.product;
 
 import lombok.Data;
 

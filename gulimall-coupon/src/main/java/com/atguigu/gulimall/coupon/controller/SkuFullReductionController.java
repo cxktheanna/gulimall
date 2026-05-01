@@ -3,7 +3,7 @@ package com.atguigu.gulimall.coupon.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.atguigu.common.to.SkuReductionTo;
+import com.atguigu.common.to.product.SkuReductionTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +27,7 @@ public class SkuFullReductionController {
     private SkuFullReductionService skuFullReductionService;
 
     @PostMapping("/saveinfo")
-    public R saveInfo(@RequestBody SkuReductionTo reductionTo) {
+    public R saveInfo(@RequestBody SkuReductionTO reductionTo) {
         skuFullReductionService.saveSkuReduction(reductionTo);
 
         return R.ok();
@@ -64,6 +64,7 @@ public class SkuFullReductionController {
 
         return R.ok();
     }
+
 
     /**
      * 修改

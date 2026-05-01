@@ -1,13 +1,15 @@
 package com.atguigu.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.atguigu.common.constant.ObjectConstant;
 import com.atguigu.common.entity.product.*;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
+import com.atguigu.common.utils.R;
 import com.atguigu.common.vo.product.*;
 //import com.atguigu.gulimall.product.agent.CouponAgentService;
 import com.atguigu.gulimall.product.dao.SkuInfoDao;
-//import com.atguigu.gulimall.product.feign.SeckillFeignService;
+import com.atguigu.gulimall.product.feign.SeckillFeignService;
 import com.atguigu.gulimall.product.service.SkuImagesService;
 import com.atguigu.gulimall.product.service.SkuInfoService;
 import com.atguigu.gulimall.product.service.SkuSaleAttrValueService;
@@ -44,8 +46,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     SpuInfoDescService spuInfoDescService;
     @Autowired
     AttrGroupServiceImpl attrGroupService;
-//    @Autowired
-//    SeckillFeignService seckillFeignService;
+    @Autowired
+    SeckillFeignService seckillFeignService;
     @Autowired
     ThreadPoolExecutor executor;
 
@@ -194,15 +196,15 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             result.setImages(images);
         }, executor);
 
-//        CompletableFuture<Void> seckillSkuFuture = CompletableFuture.runAsync(() -> {
-//            // 3.查询当前商品是否参与秒杀优惠
-////            R r = seckillFeignService.getSkuSeckilInfo(skuId);
-////            if (r.getCode() == 0) {
-////                SeckillSkuVO seckillSku = r.getData(new TypeReference<SeckillSkuVO>() {
-////                });
-////                result.setSeckillSku(seckillSku);
-////            }
-//        }, executor);
+        CompletableFuture<Void> seckillSkuFuture = CompletableFuture.runAsync(() -> {
+//             3.查询当前商品是否参与秒杀优惠
+            R r = seckillFeignService.getSkuSeckilInfo(skuId);
+            if (r.getCode() == 0) {
+                SeckillSkuVO seckillSku = r.getData(new TypeReference<SeckillSkuVO>() {
+                });
+                result.setSeckillSku(seckillSku);
+            }
+        }, executor);
 
         CompletableFuture<Void> saleAttrFuture = skuInfoFuture.thenAcceptAsync((skuInfo) -> {
             // 4.获取当前sku所属spu下的所有销售属性组合（pms_sku_info、pms_sku_sale_attr_value）

@@ -1,7 +1,7 @@
 package com.atguigu.gulimall.coupon.service.impl;
 
-import com.atguigu.common.to.MemberPrice;
-import com.atguigu.common.to.SkuReductionTo;
+import com.atguigu.common.to.product.MemberPrice;
+import com.atguigu.common.to.product.SkuReductionTO;
 import com.atguigu.gulimall.coupon.entity.MemberPriceEntity;
 import com.atguigu.gulimall.coupon.entity.SkuLadderEntity;
 import com.atguigu.gulimall.coupon.service.MemberPriceService;
@@ -24,8 +24,6 @@ import com.atguigu.common.utils.Query;
 import com.atguigu.gulimall.coupon.dao.SkuFullReductionDao;
 import com.atguigu.gulimall.coupon.entity.SkuFullReductionEntity;
 import com.atguigu.gulimall.coupon.service.SkuFullReductionService;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 
 @Service("skuFullReductionService")
@@ -47,7 +45,7 @@ public class SkuFullReductionServiceImpl extends ServiceImpl<SkuFullReductionDao
     }
 
     @Override
-    public void saveSkuReduction(SkuReductionTo reductionTo) {
+    public void saveSkuReduction(SkuReductionTO reductionTo) {
         // 1.sku的打折（买几件打几折）sms_sku_ladder【剔除满减信息为0的】
         if (reductionTo.getFullCount() > 0) {
             SkuLadderEntity skuLadderEntity = new SkuLadderEntity();

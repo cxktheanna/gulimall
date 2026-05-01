@@ -3,6 +3,7 @@ package com.atguigu.gulimall.product.app;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,15 @@ public class SkuInfoController {
 		SkuInfoEntity skuInfo = skuInfoService.getById(skuId);
 
         return R.ok().put("skuInfo", skuInfo);
+    }
+
+    /**
+     * 查询商品集合
+     */
+    @PostMapping("/infos")
+    public R infos(@RequestBody List<Long> skuIds) {
+        List<SkuInfoEntity> skuInfos = skuInfoService.getByIds(skuIds);
+        return R.ok().setData(skuInfos);
     }
 
     /**
